@@ -40,6 +40,6 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    background-color: rebeccapurple;
+    background-color: var(--bg);
   }
 }
