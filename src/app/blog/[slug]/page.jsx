@@ -1,47 +1,53 @@
 import Image from "next/image";
 import styles from "./singlePost.module.css";
-function SignlePostPage() {
+import Postuser from "@/components/postUser/Postuser";
+import { getPost } from "@/lib/data";
+
+const getData = async (slug) => {
+  const response = await fetch(`http://localhost:3000/api/blog/${slug}`);
+  if (!response.ok) {
+    throw new Error("Something went wrong with api request");
+  }
+
+  return response.json();
+};
+export const generateMetadata = async ({ params }) => {
+  const { slug } = params;
+
+  const post = await getPost(slug);
+
+  return {
+    title: post.title,
+    description: post.desc,
+  };
+};
+async function SignlePostPage({ params }) {
+  const { slug } = params;
+  const post = await getData(slug);
+
   return (
-    <>
-      <div className={styles.container}>
-        <div className={styles.imgContainer}>
-          <Image
-            src="https://images.pexels.com/photos/27298696/pexels-photo-27298696/free-photo-of-a-swan-is-standing-on-the-ice-in-the-water.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt=""
-            fill
-            className={styles.img}
-          />
-        </div>
-        <div className={styles.textContainer}>
-          <h1 className={styles.title}>Title</h1>
-          <div className={styles.detail}>
-            <Image
-              src="https://images.pexels.com/photos/27298696/pexels-photo-27298696/free-photo-of-a-swan-is-standing-on-the-ice-in-the-water.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              className={styles.avatar}
-              alt=""
-              width={50}
-              height={50}
-            />
-
-            <div className={styles.detailText}>
-              <span className={styles.detailTitle}>Author</span>
-              <span className={styles.detailValue}>John Doe</span>
-            </div>
-
-            <div className={styles.detailText}>
-              <span className={styles.detailTitle}>Published</span>
-              <span className={styles.detailValue}>24.06.2004</span>
-            </div>
-          </div>
-          <div className={styles.content}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque
-            repellat placeat quibusdam magnam omnis laborum, eum ratione impedit
-            reiciendis natus velit molestias atque enim doloribus animi unde
-            pariatur. Ex, adipisci.
-          </div>
-        </div>
+    <div className={styles.container}>
+      <div className={styles.imgContainer}>
+        {post.img && (
+          <Image src={post.img} alt="" fill className={styles.img} />
+        )}
       </div>
-    </>
+      <div className={styles.textContainer}>
+        <h1 className={styles.title}>{post.title}</h1>
+        <div className={styles.detail}>
+          <Postuser userId={post.userId} />
+
+          <div className={styles.detailText}>
+            <span className={styles.detailTitle}>Published</span>
+            <span className={styles.detailValue}>
+              {/* {post.createdAt.toString.slice(4, 16)} */}
+              2024-01-01
+            </span>
+          </div>
+        </div>
+        <div className={styles.content}>{post.desc}</div>
+      </div>
+    </div>
   );
 }
 

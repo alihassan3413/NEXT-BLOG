@@ -33,7 +33,7 @@ const Links = () => {
     <div className={styles.container}>
       <div className={styles.links}>
         {links.map((link) => (
-          <NavLink item={link} />
+          <NavLink key={link.title} item={link} />
         ))}
         {session ? (
           <>
