@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wrapper {
+  width: 500px;
+  background-color: var(--bgSoft);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 20px;
+  border-radius: 5px;
+}

@@ -1,7 +1,14 @@
+import styles from "./register.module.css";
+import RegisterForm from "@/components/registerForm/registerForm";
+
 function Register() {
   return (
     <>
-      <h1>Register Page</h1>
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <RegisterForm />
+        </div>
+      </div>
     </>
   );
 }

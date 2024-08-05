@@ -1,33 +1,19 @@
 "use client";
 
-const { default: Link } = require("next/link");
 import { useState } from "react";
 import styles from "./links.module.css";
 import NavLink from "./navLink";
 import Image from "next/image";
-const Links = () => {
+import { githubLogout } from "@/lib/actions";
+
+const Links = ({ session }) => {
   const links = [
-    {
-      title: "HomePage",
-      path: "/",
-    },
-    {
-      title: "AboutPage",
-      path: "/about",
-    },
-    {
-      title: "ContactPage",
-      path: "/contact",
-    },
-    {
-      title: "BlogPage",
-      path: "/blog",
-    },
+    { title: "Home", path: "/" },
+    { title: "About", path: "/about" },
+    { title: "Contact", path: "/contact" },
+    { title: "Blog", path: "/blog" },
   ];
   const [open, setOpen] = useState(false);
-
-  const session = false;
-  const isAdmin = false;
 
   return (
     <div className={styles.container}>
@@ -37,8 +23,12 @@ const Links = () => {
         ))}
         {session ? (
           <>
-            {isAdmin && <NavLink item={{ title: "Admin", path: "/admin" }} />}
-            <button className={styles.logout}>Logout</button>
+            {session.user?.isAdmin && (
+              <NavLink item={{ title: "Admin", path: "/admin" }} />
+            )}
+            <form action={githubLogout}>
+              <button className={styles.logout}>Logout</button>
+            </form>
           </>
         ) : (
           <NavLink item={{ title: "Login", path: "/login" }} />
@@ -56,7 +46,7 @@ const Links = () => {
       {open && (
         <div className={styles.mobileLinks}>
           {links.map((link) => (
-            <NavLink item={link} />
+            <NavLink key={link.title} item={link} />
           ))}
         </div>
       )}
